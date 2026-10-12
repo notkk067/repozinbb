@@ -1,0 +1,3345 @@
+<style>
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-touch-callout:none
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  background:transparent;
+  color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
+  overflow:hidden;
+  touch-action:manipulation
+}
+
+.wrap{
+  width:100%;
+  max-width:620px;
+  margin:auto;
+  padding:7px
+}
+
+.card{
+  position:relative;
+  overflow:hidden;
+  border-radius:24px;
+  background:linear-gradient(180deg,#171525 0%,#0b0a12 100%);
+  border:1px solid rgba(255,255,255,.13);
+  box-shadow:
+    0 20px 55px rgba(0,0,0,.55),
+    inset 0 1px rgba(255,255,255,.08)
+}
+
+.glow{
+  position:absolute;
+  width:240px;
+  height:240px;
+  left:50%;
+  top:190px;
+  transform:translateX(-50%);
+  background:rgba(105,87,229,.16);
+  filter:blur(70px);
+  pointer-events:none
+}
+
+.header{
+  position:relative;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:14px 15px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.025)
+}
+
+.logo{
+  width:43px;
+  height:43px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:14px;
+  margin-right:10px;
+  font-size:25px;
+  background:linear-gradient(145deg,#8b79ff,#5541c5);
+  box-shadow:
+    0 7px 25px rgba(105,87,229,.4),
+    inset 0 1px rgba(255,255,255,.25)
+}
+
+.brand{
+  display:flex;
+  align-items:center
+}
+
+.mini{
+  font-size:8px;
+  letter-spacing:2px;
+  color:#77748c;
+  margin-bottom:4px
+}
+
+.title{
+  font-size:19px;
+  font-weight:900
+}
+
+.sub{
+  margin-top:3px;
+  font-size:9px;
+  color:#77748c
+}
+
+.status{
+  padding:8px 10px;
+  border-radius:999px;
+  font-size:9px;
+  font-weight:900;
+  white-space:nowrap;
+  border:1px solid rgba(103,230,165,.18);
+  background:rgba(103,230,165,.08);
+  color:#8ef2bc
+}
+
+.main{
+  position:relative;
+  z-index:1;
+  padding:13px 12px 14px
+}
+
+.players{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-bottom:12px
+}
+
+.player{
+  padding:10px 11px;
+  border-radius:14px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.07)
+}
+
+.player.active{
+  border-color:rgba(105,87,229,.75);
+  box-shadow:0 0 22px rgba(105,87,229,.12)
+}
+
+.playerTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between
+}
+
+.playerName{
+  font-size:10px;
+  font-weight:900
+}
+
+.playerState{
+  margin-top:4px;
+  font-size:8px;
+  color:#77748c
+}
+
+.dot{
+  width:8px;
+  height:8px;
+  border-radius:50%
+}
+
+.hordeDot{
+  background:#8ef2bc;
+  box-shadow:0 0 11px rgba(142,242,188,.75)
+}
+
+.powerDot{
+  background:#ffd654;
+  box-shadow:0 0 11px rgba(255,214,84,.75)
+}
+
+.boardWrap{
+  position:relative;
+  width:100%;
+  max-width:570px;
+  margin:auto;
+  padding:7px;
+  border-radius:18px;
+  background:linear-gradient(145deg,#21243a,#0e101b);
+  border:1px solid rgba(255,255,255,.09);
+  box-shadow:
+    0 14px 35px rgba(0,0,0,.4),
+    inset 0 1px rgba(255,255,255,.05)
+}
+
+.board{
+  display:block;
+  width:100%;
+  aspect-ratio:8/5;
+  border-radius:11px;
+  overflow:hidden;
+  cursor:pointer;
+  background:#0d1020
+}
+
+.combo{
+  position:absolute;
+  left:50%;
+  top:14px;
+  transform:translateX(-50%);
+  padding:6px 11px;
+  border-radius:999px;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:1px;
+  color:#fff;
+  background:rgba(108,92,231,.75);
+  border:1px solid rgba(255,255,255,.16);
+  opacity:0;
+  transition:opacity .2s ease;
+  pointer-events:none
+}
+
+.combo.show{
+  opacity:1
+}
+
+.info{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+  margin-top:10px
+}
+
+.infoBox{
+  border-radius:12px;
+  padding:9px 10px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.065);
+  text-align:center
+}
+
+.infoLabel{
+  font-size:7px;
+  letter-spacing:1.2px;
+  color:#6f6b81
+}
+
+.infoValue{
+  margin-top:4px;
+  font-size:11px;
+  font-weight:900
+}
+
+.controls{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:9px
+}
+
+.button{
+  height:40px;
+  border:0;
+  border-radius:11px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.08);
+  color:#fff;
+  font-size:9px;
+  font-weight:900;
+  cursor:pointer
+}
+
+.button:active{
+  transform:scale(.97)
+}
+
+.button:disabled{
+  opacity:.4
+}
+
+.message{
+  min-height:38px;
+  margin-top:9px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:8px 10px;
+  border-radius:11px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.07);
+  color:#8a8798;
+  font-size:9px;
+  line-height:13px
+}
+
+.history{
+  height:73px;
+  overflow:auto;
+  margin-top:9px;
+  padding:8px 10px;
+  border-radius:11px;
+  background:rgba(0,0,0,.16);
+  border:1px solid rgba(255,255,255,.055);
+  color:#838091;
+  font-size:8px
+}
+
+.historyLine{
+  padding:2px 0;
+  border-bottom:1px solid rgba(255,255,255,.025)
+}
+
+.footer{
+  position:relative;
+  z-index:2;
+  padding:0 0 12px;
+  text-align:center;
+  font-size:7px;
+  letter-spacing:1px;
+  color:#565265
+}
+
+.overlay{
+  position:absolute;
+  inset:0;
+  z-index:50;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(105,87,229,.18),
+      transparent 42%
+    ),
+    rgba(6,5,12,.90);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  transition:
+    opacity .25s ease,
+    visibility .25s ease
+}
+
+.overlay.hidden{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none
+}
+
+.startPanel{
+  width:100%;
+  max-width:430px;
+  padding:22px;
+  border-radius:22px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(31,29,49,.98),
+      rgba(12,11,20,.99)
+    );
+  border:1px solid rgba(255,255,255,.11);
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.62),
+    inset 0 1px rgba(255,255,255,.08);
+  text-align:center
+}
+
+.startIcon{
+  width:62px;
+  height:62px;
+  margin:0 auto 13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:18px;
+  font-size:31px;
+  background:
+    linear-gradient(
+      145deg,
+      #8b79ff,
+      #5541c5
+    );
+  box-shadow:
+    0 12px 40px rgba(105,87,229,.35),
+    inset 0 1px rgba(255,255,255,.25)
+}
+
+.startEyebrow{
+  font-size:8px;
+  letter-spacing:2.2px;
+  color:#76718b;
+  font-weight:900
+}
+
+.startTitle{
+  margin-top:5px;
+  font-size:23px;
+  font-weight:900
+}
+
+.startSub{
+  margin-top:6px;
+  font-size:9px;
+  color:#858096;
+  line-height:14px
+}
+
+.sideGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+  margin-top:18px
+}
+
+.sideBtn{
+  position:relative;
+  min-height:105px;
+  padding:14px 7px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.08);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.055),
+      rgba(255,255,255,.025)
+    );
+  color:#fff;
+  cursor:pointer;
+  transition:
+    border-color .15s ease,
+    background .15s ease,
+    transform .15s ease,
+    box-shadow .15s ease
+}
+
+.sideBtn:active{
+  transform:scale(.98)
+}
+
+.sideBtn.selected{
+  border-color:rgba(118,99,255,.95);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(108,92,231,.20),
+      rgba(108,92,231,.07)
+    );
+  box-shadow:
+    0 0 28px rgba(108,92,231,.16),
+    inset 0 0 0 1px rgba(108,92,231,.15)
+}
+
+.sideBtn.selected:before{
+  content:"ESCOLHIDO";
+  position:absolute;
+  top:7px;
+  right:7px;
+  font-size:5px;
+  letter-spacing:1px;
+  color:#aaa0ff;
+  font-weight:900
+}
+
+.sidePiece{
+  font-size:27px;
+  line-height:1
+}
+
+.sideName{
+  margin-top:9px;
+  font-size:8px;
+  font-weight:900
+}
+
+.sideHint{
+  margin-top:4px;
+  font-size:7px;
+  color:#77738a;
+  line-height:10px
+}
+
+.matchSummary{
+  margin-top:13px;
+  min-height:33px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:7px 10px;
+  border-radius:10px;
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.05);
+  color:#797489;
+  font-size:8px;
+  line-height:12px
+}
+
+.startBtn{
+  width:100%;
+  height:43px;
+  margin-top:11px;
+  border:0;
+  border-radius:12px;
+  background:
+    linear-gradient(
+      135deg,
+      #8b79ff,
+      #5b47cf
+    );
+  color:#fff;
+  font-size:10px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:
+    0 10px 30px rgba(105,87,229,.25),
+    inset 0 1px rgba(255,255,255,.20);
+  transition:
+    transform .15s ease,
+    opacity .15s ease
+}
+
+.startBtn:active{
+  transform:scale(.98)
+}
+
+.startBtn:disabled{
+  opacity:.35;
+  cursor:default;
+  box-shadow:none
+}
+
+.startNote{
+  margin-top:11px;
+  color:#5f5b70;
+  font-size:7px;
+  line-height:11px
+}
+
+.overPanel{
+  width:100%;
+  max-width:360px;
+  padding:22px 20px;
+  border-radius:20px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(31,29,49,.98),
+      rgba(12,11,20,.99)
+    );
+  border:1px solid rgba(255,255,255,.11);
+  box-shadow:0 26px 70px rgba(0,0,0,.6);
+  text-align:center
+}
+
+.overTitle{
+  margin-top:9px;
+  font-size:20px;
+  font-weight:900
+}
+
+.overSub{
+  margin-top:5px;
+  font-size:8px;
+  color:#858096;
+  line-height:12px
+}
+
+.overGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+  margin-top:16px
+}
+
+@media(max-width:480px){
+
+  body{
+    padding:0
+  }
+
+  .wrap{
+    padding:3px
+  }
+
+  .main{
+    padding:10px 8px 11px
+  }
+
+  .header{
+    padding:12px
+  }
+
+  .boardWrap{
+    padding:5px
+  }
+
+  .startPanel{
+    padding:18px
+  }
+
+}
+</style>
+
+<div class="wrap">
+<div class="card">
+
+<div class="glow"></div>
+
+<div class="header">
+
+<div class="brand">
+
+<div class="logo">🧟</div>
+
+<div>
+
+<div class="mini">
+NOTDEV GAME CENTER
+</div>
+
+<div class="title">
+ZOMBIE TSUNAMI
+</div>
+
+<div id="subTitle" class="sub">
+ESCOLHA A DIFICULDADE
+</div>
+
+</div>
+
+</div>
+
+<div id="status" class="status">
+PRONTO
+</div>
+
+</div>
+
+<div class="main">
+
+<div class="players">
+
+<div id="hordeCard" class="player">
+
+<div class="playerTop">
+
+<div id="hordeName" class="playerName">
+HORDA
+</div>
+
+<div class="dot hordeDot"></div>
+
+</div>
+
+<div id="hordeState" class="playerState">
+Aguardando
+</div>
+
+</div>
+
+<div id="powerCard" class="player">
+
+<div class="playerTop">
+
+<div id="powerName" class="playerName">
+PODER
+</div>
+
+<div class="dot powerDot"></div>
+
+</div>
+
+<div id="powerState" class="playerState">
+Nenhum
+</div>
+
+</div>
+
+</div>
+
+<div class="boardWrap">
+
+<canvas id="board" class="board"></canvas>
+
+<div id="combo" class="combo"></div>
+
+</div>
+
+<div class="info">
+
+<div class="infoBox">
+
+<div class="infoLabel">
+DISTÂNCIA
+</div>
+
+<div id="distValue" class="infoValue">
+0 m
+</div>
+
+</div>
+
+<div class="infoBox">
+
+<div class="infoLabel">
+PONTOS
+</div>
+
+<div id="scoreValue" class="infoValue">
+0
+</div>
+
+</div>
+
+<div class="infoBox">
+
+<div class="infoLabel">
+RECORDE
+</div>
+
+<div id="recordValue" class="infoValue">
+0
+</div>
+
+</div>
+
+</div>
+
+<div class="controls">
+
+<button
+  id="newBtn"
+  class="button"
+  type="button"
+>
+NOVA CORRIDA
+</button>
+
+<button
+  id="pauseBtn"
+  class="button"
+  type="button"
+>
+PAUSAR
+</button>
+
+</div>
+
+<div id="message" class="message">
+Escolha a dificuldade para começar.
+</div>
+
+<div id="history" class="history"></div>
+
+</div>
+
+<div class="footer">
+PULO DUPLO · PEDESTRES · ÔNIBUS · BURACOS · PODERES
+</div>
+
+<div
+  id="startOverlay"
+  class="overlay"
+>
+
+<div class="startPanel">
+
+<div class="startIcon">
+🧟
+</div>
+
+<div class="startEyebrow">
+NOTDEV GAME CENTER
+</div>
+
+<div class="startTitle">
+ZOMBIE TSUNAMI
+</div>
+
+<div class="startSub">
+Escolha a dificuldade antes de soltar a horda.
+</div>
+
+<div class="sideGrid">
+
+<button
+  id="easyBtn"
+  class="sideBtn"
+  type="button"
+>
+
+<div class="sidePiece">
+🚶
+</div>
+
+<div class="sideName">
+FÁCIL
+</div>
+
+<div class="sideHint">
+HORDA<br>INICIAL 4
+</div>
+
+</button>
+
+<button
+  id="normalBtn"
+  class="sideBtn"
+  type="button"
+>
+
+<div class="sidePiece">
+🧟
+</div>
+
+<div class="sideName">
+NORMAL
+</div>
+
+<div class="sideHint">
+HORDA<br>INICIAL 3
+</div>
+
+</button>
+
+<button
+  id="insaneBtn"
+  class="sideBtn"
+  type="button"
+>
+
+<div class="sidePiece">
+☠️
+</div>
+
+<div class="sideName">
+INSANO
+</div>
+
+<div class="sideHint">
+HORDA<br>INICIAL 1
+</div>
+
+</button>
+
+</div>
+
+<div
+  id="matchSummary"
+  class="matchSummary"
+>
+Selecione FÁCIL, NORMAL ou INSANO.
+</div>
+
+<button
+  id="startBtn"
+  class="startBtn"
+  type="button"
+  disabled
+>
+SOLTAR A HORDA
+</button>
+
+<div class="startNote">
+Toque na tela para pular · toque de novo no ar para o pulo duplo
+</div>
+
+</div>
+
+</div>
+
+<div
+  id="overOverlay"
+  class="overlay hidden"
+>
+
+<div class="overPanel">
+
+<div class="startIcon">
+☠️
+</div>
+
+<div class="startEyebrow">
+FIM DA CORRIDA
+</div>
+
+<div id="overTitle" class="overTitle">
+HORDA ELIMINADA
+</div>
+
+<div id="overSub" class="overSub">
+A horda inteira foi destruída.
+</div>
+
+<div class="overGrid">
+
+<div class="infoBox">
+
+<div class="infoLabel">
+DISTÂNCIA
+</div>
+
+<div id="overDist" class="infoValue">
+0 m
+</div>
+
+</div>
+
+<div class="infoBox">
+
+<div class="infoLabel">
+PONTOS
+</div>
+
+<div id="overScore" class="infoValue">
+0
+</div>
+
+</div>
+
+<div class="infoBox">
+
+<div class="infoLabel">
+RECORDE
+</div>
+
+<div id="overRecord" class="infoValue">
+0
+</div>
+
+</div>
+
+</div>
+
+<button
+  id="againBtn"
+  class="startBtn"
+  type="button"
+>
+CORRER DE NOVO
+</button>
+
+<div class="startNote">
+Converta pedestres para aumentar a horda e pegue poderes para atravessar tudo
+</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+<script>
+(function(){
+
+"use strict";
+
+const canvas=
+  document.getElementById("board");
+
+const ctx=
+  canvas.getContext("2d");
+
+const statusEl=
+  document.getElementById("status");
+
+const messageEl=
+  document.getElementById("message");
+
+const historyEl=
+  document.getElementById("history");
+
+const hordeCard=
+  document.getElementById("hordeCard");
+
+const powerCard=
+  document.getElementById("powerCard");
+
+const hordeName=
+  document.getElementById("hordeName");
+
+const hordeState=
+  document.getElementById("hordeState");
+
+const powerName=
+  document.getElementById("powerName");
+
+const powerState=
+  document.getElementById("powerState");
+
+const distValue=
+  document.getElementById("distValue");
+
+const scoreValue=
+  document.getElementById("scoreValue");
+
+const recordValue=
+  document.getElementById("recordValue");
+
+const newBtn=
+  document.getElementById("newBtn");
+
+const pauseBtn=
+  document.getElementById("pauseBtn");
+
+const startOverlay=
+  document.getElementById("startOverlay");
+
+const overOverlay=
+  document.getElementById("overOverlay");
+
+const easyBtn=
+  document.getElementById("easyBtn");
+
+const normalBtn=
+  document.getElementById("normalBtn");
+
+const insaneBtn=
+  document.getElementById("insaneBtn");
+
+const startBtn=
+  document.getElementById("startBtn");
+
+const againBtn=
+  document.getElementById("againBtn");
+
+const matchSummary=
+  document.getElementById("matchSummary");
+
+const subTitle=
+  document.getElementById("subTitle");
+
+const comboEl=
+  document.getElementById("combo");
+
+const overTitle=
+  document.getElementById("overTitle");
+
+const overSub=
+  document.getElementById("overSub");
+
+const overDist=
+  document.getElementById("overDist");
+
+const overScore=
+  document.getElementById("overScore");
+
+const overRecord=
+  document.getElementById("overRecord");
+
+const W=800;
+const H=500;
+
+const GROUND=398;
+
+const GRAVITY=1900;
+const JUMP=820;
+
+const MAX_ZOMBIES=18;
+
+const modes={
+  easy:{
+    name:"FÁCIL",
+    horde:4,
+    speed:290,
+    ramp:5,
+    gap:[1.15,1.75],
+    hint:"Horda inicial de 4 zumbis e obstáculos mais espaçados."
+  },
+  normal:{
+    name:"NORMAL",
+    horde:3,
+    speed:330,
+    ramp:7,
+    gap:[0.95,1.45],
+    hint:"Horda inicial de 3 zumbis no ritmo clássico."
+  },
+  insane:{
+    name:"INSANO",
+    horde:1,
+    speed:385,
+    ramp:10,
+    gap:[0.72,1.15],
+    hint:"Um zumbi só, tudo mais rápido e sem perdão."
+  }
+};
+
+const powers={
+  gigante:{
+    label:"GIGANTE",
+    time:8,
+    color:"#8ef2bc",
+    hint:"A horda virou um zumbi gigante e destrói tudo."
+  },
+  turbo:{
+    label:"TURBO",
+    time:6,
+    color:"#ffd654",
+    hint:"Velocidade máxima e imunidade total."
+  },
+  balao:{
+    label:"BALÃO",
+    time:7,
+    color:"#63daf5",
+    hint:"A horda flutua por cima dos obstáculos."
+  }
+};
+
+const powerKeys=
+  Object.keys(powers);
+
+let mode=modes.normal;
+let selectedMode=null;
+
+let horde=3;
+let score=0;
+let distance=0;
+let record=0;
+
+let speed=0;
+let baseSpeed=0;
+
+let leader={
+  x:210,
+  y:GROUND,
+  vy:0,
+  onGround:true,
+  jumps:0
+};
+
+let trail=[];
+let worldX=0;
+
+let obstacles=[];
+let humans=[];
+let brains=[];
+let items=[];
+let effects=[];
+
+let clouds=[];
+let buildings=[];
+let dashes=[];
+
+let spawnTimer=0;
+let brainTimer=0;
+let itemTimer=0;
+
+let power=null;
+let powerLeft=0;
+
+let invulnerable=0;
+
+let running=false;
+let paused=false;
+let started=false;
+let gameOver=false;
+
+let log=[];
+
+let lastTime=0;
+let rafId=0;
+let comboTimer=0;
+
+// ─── Armazenamento do recorde ──────────────────────────────────────────
+
+function loadRecord(){
+
+  try{
+
+    const raw=
+      window.localStorage.getItem(
+        "zt_record"
+      );
+
+    record=
+      raw
+        ? parseInt(raw,10)||0
+        : 0;
+
+  }catch(e){
+
+    record=0;
+
+  }
+
+}
+
+function saveRecord(){
+
+  try{
+
+    window.localStorage.setItem(
+      "zt_record",
+      String(record)
+    );
+
+  }catch(e){}
+
+}
+
+// ─── Canvas ────────────────────────────────────────────────────────────
+
+function resizeCanvas(){
+
+  const ratio=
+    Math.min(
+      window.devicePixelRatio||1,
+      2
+    );
+
+  const rect=
+    canvas.getBoundingClientRect();
+
+  const width=
+    rect.width||W;
+
+  canvas.width=
+    Math.round(width*ratio);
+
+  canvas.height=
+    Math.round(width*ratio*(H/W));
+
+  ctx.setTransform(
+    canvas.width/W,
+    0,
+    0,
+    canvas.width/W,
+    0,
+    0
+  );
+
+  draw();
+
+}
+
+// ─── Cenário ───────────────────────────────────────────────────────────
+
+function buildScenery(){
+
+  clouds=[];
+  buildings=[];
+  dashes=[];
+
+  for(let i=0;i<6;i++){
+
+    clouds.push({
+      x:Math.random()*W,
+      y:40+Math.random()*110,
+      s:0.6+Math.random()*0.9
+    });
+
+  }
+
+  let x=0;
+
+  while(x<W+240){
+
+    const w=
+      60+Math.random()*70;
+
+    buildings.push({
+      x,
+      w,
+      h:110+Math.random()*150,
+      windows:Math.random()>0.35
+    });
+
+    x+=w+12;
+
+  }
+
+  for(let i=0;i<24;i++){
+
+    dashes.push({
+      x:i*70
+    });
+
+  }
+
+}
+
+// ─── Log ───────────────────────────────────────────────────────────────
+
+function renderLog(){
+
+  historyEl.innerHTML=
+    log
+      .map(
+        (x,i)=>
+          '<div class="historyLine">'+
+          (i+1)+
+          ". "+
+          x+
+          "</div>"
+      )
+      .join("");
+
+  historyEl.scrollTop=
+    historyEl.scrollHeight;
+
+}
+
+function addLog(text){
+
+  log.push(text);
+
+  if(log.length>60){
+    log.shift();
+  }
+
+  renderLog();
+
+}
+
+function showCombo(text){
+
+  comboEl.textContent=text;
+
+  comboEl.classList.add("show");
+
+  comboTimer=1.1;
+
+}
+
+// ─── HUD ───────────────────────────────────────────────────────────────
+
+function updateUI(){
+
+  if(!started){
+
+    statusEl.textContent=
+      "PRONTO";
+
+  }else if(gameOver){
+
+    statusEl.textContent=
+      "FIM DE JOGO";
+
+  }else if(paused){
+
+    statusEl.textContent=
+      "PAUSADO";
+
+  }else if(power){
+
+    statusEl.textContent=
+      powers[power].label;
+
+  }else{
+
+    statusEl.textContent=
+      "CORRENDO";
+
+  }
+
+  distValue.textContent=
+    Math.floor(distance)+" m";
+
+  scoreValue.textContent=
+    String(score);
+
+  recordValue.textContent=
+    String(record);
+
+  hordeName.textContent=
+    "HORDA · "+horde;
+
+  hordeState.textContent=
+    !started
+      ?"Aguardando"
+      :gameOver
+        ?"Eliminada"
+        :horde>=MAX_ZOMBIES
+          ?"Tsunami máximo"
+          :horde+
+            (
+              horde===1
+                ?" zumbi correndo"
+                :" zumbis correndo"
+            );
+
+  powerName.textContent=
+    power
+      ?"PODER · "+powers[power].label
+      :"PODER";
+
+  powerState.textContent=
+    power
+      ?powers[power].label+
+        " · "+
+        powerLeft.toFixed(1)+
+        "s"
+      :started&&!gameOver
+        ?"Nenhum ativo"
+        :"Nenhum";
+
+  hordeCard.classList.toggle(
+    "active",
+    started&&
+    !gameOver&&
+    horde>0
+  );
+
+  powerCard.classList.toggle(
+    "active",
+    !!power
+  );
+
+  pauseBtn.textContent=
+    paused
+      ?"CONTINUAR"
+      :"PAUSAR";
+
+  pauseBtn.disabled=
+    !started||
+    gameOver;
+
+}
+
+// ─── Estado ────────────────────────────────────────────────────────────
+
+function resetRun(){
+
+  horde=mode.horde;
+  score=0;
+  distance=0;
+
+  baseSpeed=mode.speed;
+  speed=mode.speed;
+
+  leader={
+    x:210,
+    y:GROUND,
+    vy:0,
+    onGround:true,
+    jumps:0
+  };
+
+  trail=[];
+  worldX=0;
+
+  obstacles=[];
+  humans=[];
+  brains=[];
+  items=[];
+  effects=[];
+
+  spawnTimer=1.7;
+  brainTimer=1.4;
+  itemTimer=9;
+
+  power=null;
+  powerLeft=0;
+
+  invulnerable=0;
+
+  paused=false;
+  gameOver=false;
+
+  log=[];
+
+  comboEl.classList.remove("show");
+
+  buildScenery();
+  renderLog();
+
+}
+
+function selectMode(key){
+
+  if(started){
+    return;
+  }
+
+  selectedMode=key;
+
+  easyBtn.classList.toggle(
+    "selected",
+    key==="easy"
+  );
+
+  normalBtn.classList.toggle(
+    "selected",
+    key==="normal"
+  );
+
+  insaneBtn.classList.toggle(
+    "selected",
+    key==="insane"
+  );
+
+  startBtn.disabled=false;
+
+  matchSummary.textContent=
+    modes[key].hint;
+
+}
+
+function startRun(){
+
+  if(
+    started||
+    !selectedMode
+  ){
+
+    return;
+
+  }
+
+  mode=modes[selectedMode];
+
+  resetRun();
+
+  started=true;
+  running=true;
+
+  subTitle.textContent=
+    "MODO "+mode.name+" · TOQUE PARA PULAR";
+
+  startOverlay.classList.add("hidden");
+  overOverlay.classList.add("hidden");
+
+  messageEl.textContent=
+    "Toque na tela para pular. Converta pedestres e evite ônibus e buracos.";
+
+  addLog(
+    "Corrida iniciada no modo "+
+    mode.name+
+    " com "+
+    horde+
+    (
+      horde===1
+        ?" zumbi"
+        :" zumbis"
+    )
+  );
+
+  updateUI();
+
+  lastTime=0;
+
+  cancelAnimationFrame(rafId);
+
+  rafId=
+    requestAnimationFrame(loop);
+
+}
+
+function newRun(){
+
+  running=false;
+  started=false;
+  gameOver=false;
+  paused=false;
+
+  cancelAnimationFrame(rafId);
+
+  selectedMode=null;
+
+  easyBtn.classList.remove("selected");
+  normalBtn.classList.remove("selected");
+  insaneBtn.classList.remove("selected");
+
+  startBtn.disabled=true;
+
+  matchSummary.textContent=
+    "Selecione FÁCIL, NORMAL ou INSANO.";
+
+  subTitle.textContent=
+    "ESCOLHA A DIFICULDADE";
+
+  messageEl.textContent=
+    "Escolha a dificuldade para começar.";
+
+  horde=0;
+  score=0;
+  distance=0;
+
+  power=null;
+  powerLeft=0;
+
+  resetRun();
+
+  horde=0;
+
+  overOverlay.classList.add("hidden");
+  startOverlay.classList.remove("hidden");
+
+  updateUI();
+  draw();
+
+}
+
+function togglePause(){
+
+  if(
+    !started||
+    gameOver
+  ){
+
+    return;
+
+  }
+
+  paused=!paused;
+
+  if(paused){
+
+    running=false;
+
+    cancelAnimationFrame(rafId);
+
+    messageEl.textContent=
+      "Corrida pausada. Toque em CONTINUAR para voltar.";
+
+  }else{
+
+    running=true;
+
+    messageEl.textContent=
+      "Corrida retomada. Boa sorte.";
+
+    lastTime=0;
+
+    rafId=
+      requestAnimationFrame(loop);
+
+  }
+
+  updateUI();
+  draw();
+
+}
+
+function endRun(reason){
+
+  running=false;
+  gameOver=true;
+
+  cancelAnimationFrame(rafId);
+
+  const beat=
+    score>record;
+
+  if(beat){
+
+    record=score;
+
+    saveRecord();
+
+    addLog(
+      "NOVO RECORDE: "+score+" pontos"
+    );
+
+  }
+
+  overTitle.textContent=
+    "HORDA ELIMINADA";
+
+  overSub.textContent=
+    beat
+      ?"Novo recorde! "+reason
+      :reason;
+
+  overDist.textContent=
+    Math.floor(distance)+" m";
+
+  overScore.textContent=
+    String(score);
+
+  overRecord.textContent=
+    String(record);
+
+  messageEl.textContent=
+    beat
+      ?"Fim de jogo com novo recorde de "+score+" pontos."
+      :"Fim de jogo. "+reason;
+
+  addLog(
+    "Fim da corrida · "+
+    Math.floor(distance)+
+    " m · "+
+    score+
+    " pontos"
+  );
+
+  overOverlay.classList.remove("hidden");
+
+  updateUI();
+  draw();
+
+}
+
+// ─── Entradas ──────────────────────────────────────────────────────────
+
+function jump(){
+
+  if(
+    !started||
+    gameOver||
+    paused
+  ){
+
+    return;
+
+  }
+
+  const maxJumps=
+    power==="balao"
+      ?3
+      :2;
+
+  if(leader.jumps>=maxJumps){
+    return;
+  }
+
+  leader.vy=
+    -JUMP*
+    (
+      power==="balao"
+        ?0.82
+        :1
+    );
+
+  leader.onGround=false;
+  leader.jumps++;
+
+  if(leader.jumps>1){
+
+    for(let i=0;i<6;i++){
+
+      effects.push({
+        x:leader.x,
+        y:leader.y,
+        vx:-60-Math.random()*90,
+        vy:40+Math.random()*70,
+        life:0.35,
+        color:"#a99bff"
+      });
+
+    }
+
+  }
+
+}
+
+// ─── Geração ───────────────────────────────────────────────────────────
+
+function spawnObstacle(){
+
+  const roll=
+    Math.random();
+
+  if(roll<0.34){
+
+    obstacles.push({
+      type:"carro",
+      x:W+60,
+      w:88,
+      h:52,
+      dmg:1,
+      alive:true
+    });
+
+  }else if(roll<0.56){
+
+    obstacles.push({
+      type:"onibus",
+      x:W+60,
+      w:132,
+      h:82,
+      dmg:2,
+      alive:true
+    });
+
+  }else if(roll<0.76){
+
+    obstacles.push({
+      type:"cone",
+      x:W+60,
+      w:34,
+      h:36,
+      dmg:1,
+      alive:true
+    });
+
+  }else{
+
+    obstacles.push({
+      type:"buraco",
+      x:W+60,
+      w:88+Math.random()*54,
+      h:0,
+      dmg:2,
+      alive:true
+    });
+
+  }
+
+  if(Math.random()<0.55){
+
+    const group=
+      1+Math.floor(Math.random()*3);
+
+    for(let i=0;i<group;i++){
+
+      humans.push({
+        x:W+180+i*38,
+        y:GROUND,
+        alive:true,
+        phase:Math.random()*6
+      });
+
+    }
+
+  }
+
+}
+
+function spawnBrain(){
+
+  const high=
+    Math.random()<0.45;
+
+  brains.push({
+    x:W+50,
+    y:high
+      ?GROUND-150
+      :GROUND-40,
+    alive:true,
+    phase:Math.random()*6
+  });
+
+}
+
+function spawnItem(){
+
+  const key=
+    powerKeys[
+      Math.floor(
+        Math.random()*powerKeys.length
+      )
+    ];
+
+  items.push({
+    x:W+50,
+    y:GROUND-120-Math.random()*60,
+    kind:key,
+    alive:true,
+    phase:Math.random()*6
+  });
+
+}
+
+// ─── Colisão ───────────────────────────────────────────────────────────
+
+function hordeBox(){
+
+  const big=
+    power==="gigante";
+
+  const w=
+    big?86:46;
+
+  const h=
+    big?104:54;
+
+  return {
+    x:leader.x-w/2,
+    y:leader.y-h,
+    w,
+    h
+  };
+
+}
+
+function overlap(a,b){
+
+  return (
+    a.x<b.x+b.w&&
+    a.x+a.w>b.x&&
+    a.y<b.y+b.h&&
+    a.y+a.h>b.y
+  );
+
+}
+
+function obstacleBox(o){
+
+  if(o.type==="buraco"){
+
+    return {
+      x:o.x,
+      y:GROUND-4,
+      w:o.w,
+      h:26
+    };
+
+  }
+
+  return {
+    x:o.x,
+    y:GROUND-o.h,
+    w:o.w,
+    h:o.h
+  };
+
+}
+
+function smash(o,label){
+
+  o.alive=false;
+
+  for(let i=0;i<10;i++){
+
+    effects.push({
+      x:o.x+o.w/2,
+      y:GROUND-o.h/2-10,
+      vx:-140-Math.random()*180,
+      vy:-120+Math.random()*240,
+      life:0.5,
+      color:"#ffd654"
+    });
+
+  }
+
+  score+=25;
+
+  addLog(
+    label+" destruído · +25 pontos"
+  );
+
+}
+
+function addZombies(n){
+
+  const before=horde;
+
+  horde=
+    Math.min(
+      MAX_ZOMBIES,
+      horde+n
+    );
+
+  return horde-before;
+
+}
+
+function damage(o){
+
+  const label=
+    o.type==="onibus"
+      ?"Ônibus"
+      :o.type==="carro"
+        ?"Carro"
+        :o.type==="cone"
+          ?"Cone"
+          :"Buraco";
+
+  const lost=
+    Math.min(horde,o.dmg);
+
+  horde-=lost;
+
+  invulnerable=1.1;
+
+  for(let i=0;i<12;i++){
+
+    effects.push({
+      x:leader.x,
+      y:leader.y-30,
+      vx:-100-Math.random()*160,
+      vy:-160+Math.random()*220,
+      life:0.5,
+      color:"#ff5a6e"
+    });
+
+  }
+
+  addLog(
+    label+" · -"+lost+
+    (
+      lost===1
+        ?" zumbi"
+        :" zumbis"
+    )
+  );
+
+  showCombo("-"+lost+" ZUMBIS");
+
+  if(horde<=0){
+
+    horde=0;
+
+    endRun(
+      "A horda foi destruída em "+
+      Math.floor(distance)+
+      " metros."
+    );
+
+    return;
+
+  }
+
+  messageEl.textContent=
+    "Cuidado! Restam "+
+    horde+
+    (
+      horde===1
+        ?" zumbi na horda."
+        :" zumbis na horda."
+    );
+
+}
+
+function activatePower(kind){
+
+  power=kind;
+
+  powerLeft=
+    powers[kind].time;
+
+  invulnerable=
+    Math.max(
+      invulnerable,
+      0.2
+    );
+
+  addLog(
+    "Poder ativado: "+
+    powers[kind].label
+  );
+
+  showCombo(
+    powers[kind].label+" ATIVO"
+  );
+
+  messageEl.textContent=
+    powers[kind].hint;
+
+}
+
+// ─── Atualização ───────────────────────────────────────────────────────
+
+function update(dt){
+
+  const boost=
+    power==="turbo"
+      ?1.55
+      :power==="gigante"
+        ?1.18
+        :1;
+
+  baseSpeed+=
+    mode.ramp*dt;
+
+  speed=
+    baseSpeed*boost;
+
+  distance+=
+    speed*dt/34;
+
+  score+=
+    Math.round(speed*dt/26);
+
+  if(power){
+
+    powerLeft-=dt;
+
+    if(powerLeft<=0){
+
+      addLog(
+        "Poder "+
+        powers[power].label+
+        " acabou"
+      );
+
+      power=null;
+      powerLeft=0;
+
+      messageEl.textContent=
+        "O poder acabou. Volte a pular nos obstáculos.";
+
+    }
+
+  }
+
+  if(invulnerable>0){
+
+    invulnerable-=dt;
+
+  }
+
+  if(comboTimer>0){
+
+    comboTimer-=dt;
+
+    if(comboTimer<=0){
+
+      comboEl.classList.remove("show");
+
+    }
+
+  }
+
+  // física do líder
+
+  const gravity=
+    power==="balao"
+      ?GRAVITY*0.45
+      :GRAVITY;
+
+  leader.vy+=gravity*dt;
+  leader.y+=leader.vy*dt;
+
+  if(leader.y>=GROUND){
+
+    let overPit=false;
+
+    if(power!=="balao"){
+
+      for(const o of obstacles){
+
+        if(
+          o.alive&&
+          o.type==="buraco"&&
+          leader.x>o.x+6&&
+          leader.x<o.x+o.w-6
+        ){
+
+          overPit=true;
+
+          break;
+
+        }
+
+      }
+
+    }
+
+    if(
+      overPit&&
+      invulnerable<=0&&
+      !power
+    ){
+
+      const pit=
+        obstacles.find(
+          o=>
+            o.alive&&
+            o.type==="buraco"&&
+            leader.x>o.x+6&&
+            leader.x<o.x+o.w-6
+        );
+
+      if(pit){
+
+        pit.alive=false;
+
+        damage({
+          type:"buraco",
+          dmg:pit.dmg,
+          x:pit.x,
+          w:pit.w,
+          h:0
+        });
+
+        if(gameOver){
+          return;
+        }
+
+      }
+
+    }
+
+    leader.y=GROUND;
+    leader.vy=0;
+    leader.onGround=true;
+    leader.jumps=0;
+
+  }
+
+  if(power==="balao"){
+
+    const ceiling=
+      GROUND-250;
+
+    if(leader.y<ceiling){
+
+      leader.y=ceiling;
+
+      if(leader.vy<0){
+        leader.vy=0;
+      }
+
+    }
+
+  }
+
+  worldX+=speed*dt;
+
+  trail.unshift({
+    x:worldX,
+    y:leader.y
+  });
+
+  if(trail.length>260){
+    trail.pop();
+  }
+
+  // cenário
+
+  for(const c of clouds){
+
+    c.x-=speed*dt*0.12*c.s;
+
+    if(c.x<-90){
+
+      c.x=W+60;
+      c.y=40+Math.random()*110;
+
+    }
+
+  }
+
+  for(const b of buildings){
+
+    b.x-=speed*dt*0.28;
+
+    if(b.x+b.w<-40){
+
+      b.x=W+40;
+      b.h=110+Math.random()*150;
+      b.windows=Math.random()>0.35;
+
+    }
+
+  }
+
+  for(const d of dashes){
+
+    d.x-=speed*dt;
+
+    if(d.x<-70){
+      d.x+=24*70;
+    }
+
+  }
+
+  // spawn
+
+  spawnTimer-=dt;
+
+  if(spawnTimer<=0){
+
+    spawnObstacle();
+
+    const gap=mode.gap;
+
+    spawnTimer=
+      gap[0]+
+      Math.random()*(gap[1]-gap[0]);
+
+  }
+
+  brainTimer-=dt;
+
+  if(brainTimer<=0){
+
+    spawnBrain();
+
+    brainTimer=
+      0.8+Math.random()*1.6;
+
+  }
+
+  itemTimer-=dt;
+
+  if(itemTimer<=0){
+
+    spawnItem();
+
+    itemTimer=
+      12+Math.random()*10;
+
+  }
+
+  const box=hordeBox();
+
+  // obstáculos
+
+  for(const o of obstacles){
+
+    o.x-=speed*dt;
+
+    if(!o.alive){
+      continue;
+    }
+
+    if(o.x+o.w<-60){
+
+      o.alive=false;
+
+      continue;
+
+    }
+
+    if(
+      o.type!=="buraco"&&
+      overlap(box,obstacleBox(o))
+    ){
+
+      if(
+        power==="turbo"||
+        power==="gigante"
+      ){
+
+        smash(
+          o,
+          o.type==="onibus"
+            ?"Ônibus"
+            :o.type==="carro"
+              ?"Carro"
+              :"Cone"
+        );
+
+      }else if(invulnerable<=0){
+
+        o.alive=false;
+
+        damage(o);
+
+        if(gameOver){
+          return;
+        }
+
+      }
+
+    }
+
+  }
+
+  obstacles=
+    obstacles.filter(
+      o=>o.alive
+    );
+
+  // pedestres
+
+  for(const h of humans){
+
+    h.x-=speed*dt*0.86;
+    h.phase+=dt*9;
+
+    if(!h.alive){
+      continue;
+    }
+
+    if(h.x<-50){
+
+      h.alive=false;
+
+      continue;
+
+    }
+
+    const hb={
+      x:h.x-14,
+      y:GROUND-52,
+      w:28,
+      h:52
+    };
+
+    if(overlap(box,hb)){
+
+      h.alive=false;
+
+      const gained=
+        addZombies(1);
+
+      score+=15;
+
+      for(let i=0;i<8;i++){
+
+        effects.push({
+          x:h.x,
+          y:GROUND-30,
+          vx:-60-Math.random()*120,
+          vy:-90+Math.random()*180,
+          life:0.4,
+          color:"#8ef2bc"
+        });
+
+      }
+
+      if(gained>0){
+
+        addLog(
+          "Pedestre convertido · horda "+
+          horde
+        );
+
+        showCombo("+1 ZUMBI");
+
+      }else{
+
+        addLog(
+          "Pedestre convertido · horda cheia"
+        );
+
+      }
+
+    }
+
+  }
+
+  humans=
+    humans.filter(
+      h=>h.alive
+    );
+
+  // cérebros
+
+  for(const b of brains){
+
+    b.x-=speed*dt;
+    b.phase+=dt*6;
+
+    if(!b.alive){
+      continue;
+    }
+
+    if(b.x<-40){
+
+      b.alive=false;
+
+      continue;
+
+    }
+
+    const bb={
+      x:b.x-14,
+      y:b.y-14,
+      w:28,
+      h:28
+    };
+
+    if(overlap(box,bb)){
+
+      b.alive=false;
+
+      score+=10;
+
+      effects.push({
+        x:b.x,
+        y:b.y,
+        vx:0,
+        vy:-90,
+        life:0.4,
+        color:"#ff9ec7"
+      });
+
+    }
+
+  }
+
+  brains=
+    brains.filter(
+      b=>b.alive
+    );
+
+  // poderes
+
+  for(const it of items){
+
+    it.x-=speed*dt;
+    it.phase+=dt*4;
+
+    if(!it.alive){
+      continue;
+    }
+
+    if(it.x<-50){
+
+      it.alive=false;
+
+      continue;
+
+    }
+
+    const ib={
+      x:it.x-20,
+      y:it.y-20,
+      w:40,
+      h:40
+    };
+
+    if(overlap(box,ib)){
+
+      it.alive=false;
+
+      activatePower(it.kind);
+
+    }
+
+  }
+
+  items=
+    items.filter(
+      it=>it.alive
+    );
+
+  // partículas
+
+  for(const p of effects){
+
+    p.x+=p.vx*dt;
+    p.y+=p.vy*dt;
+    p.vy+=1400*dt;
+    p.life-=dt;
+
+  }
+
+  effects=
+    effects.filter(
+      p=>p.life>0
+    );
+
+}
+
+// ─── Desenho ───────────────────────────────────────────────────────────
+
+function roundRect(x,y,w,h,r){
+
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);
+  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);
+  ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.closePath();
+
+}
+
+function drawSky(){
+
+  const g=
+    ctx.createLinearGradient(0,0,0,H);
+
+  g.addColorStop(0,"#1b1836");
+  g.addColorStop(0.55,"#241f45");
+  g.addColorStop(1,"#12101f");
+
+  ctx.fillStyle=g;
+  ctx.fillRect(0,0,W,H);
+
+  ctx.fillStyle="rgba(255,214,84,.14)";
+  ctx.beginPath();
+  ctx.arc(660,96,54,0,Math.PI*2);
+  ctx.fill();
+
+  ctx.fillStyle="rgba(255,240,190,.85)";
+  ctx.beginPath();
+  ctx.arc(660,96,30,0,Math.PI*2);
+  ctx.fill();
+
+  ctx.fillStyle="rgba(255,255,255,.05)";
+
+  for(const c of clouds){
+
+    ctx.beginPath();
+    ctx.ellipse(
+      c.x,
+      c.y,
+      54*c.s,
+      17*c.s,
+      0,
+      0,
+      Math.PI*2
+    );
+    ctx.fill();
+
+  }
+
+}
+
+function drawBuildings(){
+
+  for(const b of buildings){
+
+    ctx.fillStyle="#171634";
+
+    ctx.fillRect(
+      b.x,
+      GROUND-b.h,
+      b.w,
+      b.h
+    );
+
+    ctx.fillStyle="rgba(255,255,255,.05)";
+
+    ctx.fillRect(
+      b.x,
+      GROUND-b.h,
+      b.w,
+      3
+    );
+
+    if(b.windows){
+
+      ctx.fillStyle="rgba(255,214,84,.18)";
+
+      for(
+        let y=GROUND-b.h+16;
+        y<GROUND-24;
+        y+=26
+      ){
+
+        for(
+          let x=b.x+9;
+          x<b.x+b.w-14;
+          x+=20
+        ){
+
+          if(
+            ((x+y)|0)%3!==0
+          ){
+
+            ctx.fillRect(x,y,9,13);
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+function drawRoad(){
+
+  ctx.fillStyle="#2b2f45";
+  ctx.fillRect(0,GROUND,W,H-GROUND);
+
+  ctx.fillStyle="rgba(255,255,255,.10)";
+  ctx.fillRect(0,GROUND,W,4);
+
+  ctx.fillStyle="rgba(255,255,255,.14)";
+
+  for(const d of dashes){
+
+    ctx.fillRect(
+      d.x,
+      GROUND+44,
+      38,
+      6
+    );
+
+  }
+
+  ctx.fillStyle="rgba(0,0,0,.22)";
+  ctx.fillRect(0,H-16,W,16);
+
+}
+
+function drawPit(o){
+
+  ctx.fillStyle="#0b0a12";
+
+  ctx.fillRect(
+    o.x,
+    GROUND,
+    o.w,
+    H-GROUND-16
+  );
+
+  ctx.fillStyle="rgba(255,90,110,.55)";
+
+  ctx.fillRect(o.x,GROUND,4,H-GROUND-16);
+
+  ctx.fillRect(
+    o.x+o.w-4,
+    GROUND,
+    4,
+    H-GROUND-16
+  );
+
+}
+
+function drawCar(o){
+
+  const y=GROUND-o.h;
+
+  ctx.fillStyle="#ff5a6e";
+
+  roundRect(o.x,y+10,o.w,o.h-10,9);
+  ctx.fill();
+
+  ctx.fillStyle="#ff8a98";
+
+  roundRect(
+    o.x+18,
+    y-8,
+    o.w-42,
+    24,
+    7
+  );
+  ctx.fill();
+
+  ctx.fillStyle="rgba(190,235,255,.75)";
+
+  roundRect(
+    o.x+24,
+    y-3,
+    o.w-56,
+    15,
+    4
+  );
+  ctx.fill();
+
+  ctx.fillStyle="#15141f";
+
+  ctx.beginPath();
+  ctx.arc(o.x+22,GROUND-2,11,0,Math.PI*2);
+  ctx.arc(o.x+o.w-22,GROUND-2,11,0,Math.PI*2);
+  ctx.fill();
+
+}
+
+function drawBus(o){
+
+  const y=GROUND-o.h;
+
+  ctx.fillStyle="#ffd654";
+
+  roundRect(o.x,y,o.w,o.h,10);
+  ctx.fill();
+
+  ctx.fillStyle="rgba(20,20,32,.28)";
+
+  ctx.fillRect(
+    o.x,
+    y+o.h-24,
+    o.w,
+    10
+  );
+
+  ctx.fillStyle="rgba(190,235,255,.8)";
+
+  for(let i=0;i<4;i++){
+
+    roundRect(
+      o.x+12+i*34,
+      y+12,
+      26,
+      24,
+      5
+    );
+    ctx.fill();
+
+  }
+
+  ctx.fillStyle="#15141f";
+
+  ctx.beginPath();
+  ctx.arc(o.x+30,GROUND-2,12,0,Math.PI*2);
+  ctx.arc(o.x+o.w-30,GROUND-2,12,0,Math.PI*2);
+  ctx.fill();
+
+}
+
+function drawCone(o){
+
+  ctx.fillStyle="#ff9d3c";
+
+  ctx.beginPath();
+  ctx.moveTo(o.x+o.w/2,GROUND-o.h);
+  ctx.lineTo(o.x+o.w,GROUND);
+  ctx.lineTo(o.x,GROUND);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.fillStyle="rgba(255,255,255,.75)";
+
+  ctx.fillRect(
+    o.x+7,
+    GROUND-o.h*0.5,
+    o.w-14,
+    6
+  );
+
+}
+
+function drawHuman(h){
+
+  const legs=
+    Math.sin(h.phase)*7;
+
+  ctx.fillStyle="#63daf5";
+
+  roundRect(h.x-9,GROUND-42,18,26,6);
+  ctx.fill();
+
+  ctx.fillStyle="#ffd9b8";
+
+  ctx.beginPath();
+  ctx.arc(h.x,GROUND-50,9,0,Math.PI*2);
+  ctx.fill();
+
+  ctx.strokeStyle="#3f4a63";
+  ctx.lineWidth=5;
+  ctx.lineCap="round";
+
+  ctx.beginPath();
+  ctx.moveTo(h.x,GROUND-17);
+  ctx.lineTo(h.x-6+legs,GROUND);
+  ctx.moveTo(h.x,GROUND-17);
+  ctx.lineTo(h.x+6-legs,GROUND);
+  ctx.stroke();
+
+}
+
+function drawBrain(b){
+
+  const y=
+    b.y+Math.sin(b.phase)*6;
+
+  ctx.fillStyle="#ff9ec7";
+
+  ctx.beginPath();
+  ctx.arc(b.x-6,y,9,0,Math.PI*2);
+  ctx.arc(b.x+6,y,9,0,Math.PI*2);
+  ctx.arc(b.x,y-6,9,0,Math.PI*2);
+  ctx.fill();
+
+  ctx.strokeStyle="rgba(120,30,70,.5)";
+  ctx.lineWidth=2;
+
+  ctx.beginPath();
+  ctx.moveTo(b.x-8,y+2);
+  ctx.lineTo(b.x+8,y-2);
+  ctx.stroke();
+
+}
+
+function drawItem(it){
+
+  const y=
+    it.y+Math.sin(it.phase)*8;
+
+  const color=
+    powers[it.kind].color;
+
+  ctx.fillStyle="rgba(255,255,255,.10)";
+
+  ctx.beginPath();
+  ctx.arc(it.x,y,25,0,Math.PI*2);
+  ctx.fill();
+
+  ctx.fillStyle=color;
+
+  ctx.beginPath();
+  ctx.arc(it.x,y,17,0,Math.PI*2);
+  ctx.fill();
+
+  ctx.fillStyle="#15141f";
+  ctx.font="900 15px Arial";
+  ctx.textAlign="center";
+  ctx.textBaseline="middle";
+
+  ctx.fillText(
+    it.kind==="gigante"
+      ?"G"
+      :it.kind==="turbo"
+        ?"T"
+        :"B",
+    it.x,
+    y+1
+  );
+
+}
+
+function drawZombie(x,y,scale,alpha){
+
+  ctx.save();
+  ctx.globalAlpha=alpha;
+  ctx.translate(x,y);
+  ctx.scale(scale,scale);
+
+  ctx.fillStyle="rgba(0,0,0,.28)";
+
+  ctx.beginPath();
+  ctx.ellipse(0,2,20,6,0,0,Math.PI*2);
+  ctx.fill();
+
+  ctx.fillStyle="#4fae74";
+
+  roundRect(-14,-40,28,28,8);
+  ctx.fill();
+
+  ctx.fillStyle="#3d8d5d";
+
+  roundRect(-14,-40,28,7,4);
+  ctx.fill();
+
+  ctx.strokeStyle="#4fae74";
+  ctx.lineWidth=6;
+  ctx.lineCap="round";
+
+  ctx.beginPath();
+  ctx.moveTo(-10,-14);
+  ctx.lineTo(-12,0);
+  ctx.moveTo(10,-14);
+  ctx.lineTo(12,0);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(-12,-32);
+  ctx.lineTo(-26,-30);
+  ctx.moveTo(12,-32);
+  ctx.lineTo(26,-30);
+  ctx.stroke();
+
+  ctx.fillStyle="#7bd39a";
+
+  ctx.beginPath();
+  ctx.arc(0,-50,12,0,Math.PI*2);
+  ctx.fill();
+
+  ctx.fillStyle="#15141f";
+
+  ctx.beginPath();
+  ctx.arc(-4,-52,2.6,0,Math.PI*2);
+  ctx.arc(4,-52,2.6,0,Math.PI*2);
+  ctx.fill();
+
+  ctx.fillStyle="#15141f";
+
+  ctx.fillRect(-5,-45,10,3);
+
+  ctx.restore();
+
+}
+
+function trailY(behind){
+
+  const target=
+    worldX-behind;
+
+  for(let i=0;i<trail.length;i++){
+
+    if(trail[i].x<=target){
+
+      return trail[i].y;
+
+    }
+
+  }
+
+  return trail.length
+    ? trail[trail.length-1].y
+    : leader.y;
+
+}
+
+function drawHorde(){
+
+  const big=
+    power==="gigante";
+
+  const flash=
+    invulnerable>0&&
+    Math.floor(invulnerable*14)%2===0;
+
+  const alpha=
+    flash?0.42:1;
+
+  if(big){
+
+    drawZombie(
+      leader.x,
+      leader.y,
+      1.9,
+      alpha
+    );
+
+    return;
+
+  }
+
+  const shown=
+    Math.min(horde,9);
+
+  const spacing=18;
+
+  for(let i=shown-1;i>=0;i--){
+
+    drawZombie(
+      leader.x-i*spacing,
+      trailY(i*spacing),
+      i===0?1:0.88,
+      alpha
+    );
+
+  }
+
+  if(horde>shown){
+
+    ctx.globalAlpha=alpha;
+
+    ctx.fillStyle="#8ef2bc";
+    ctx.font="900 16px Arial";
+    ctx.textAlign="left";
+    ctx.textBaseline="middle";
+
+    ctx.fillText(
+      "+"+(horde-shown),
+      leader.x-shown*spacing-26,
+      trailY(shown*spacing)-30
+    );
+
+    ctx.globalAlpha=1;
+
+  }
+
+  if(power==="balao"){
+
+    ctx.strokeStyle="rgba(99,218,245,.7)";
+    ctx.lineWidth=2;
+
+    ctx.beginPath();
+    ctx.moveTo(leader.x,leader.y-62);
+    ctx.lineTo(leader.x,leader.y-96);
+    ctx.stroke();
+
+    ctx.fillStyle="#63daf5";
+
+    ctx.beginPath();
+    ctx.ellipse(
+      leader.x,
+      leader.y-118,
+      22,
+      26,
+      0,
+      0,
+      Math.PI*2
+    );
+    ctx.fill();
+
+  }
+
+  if(power==="turbo"){
+
+    ctx.fillStyle="rgba(255,214,84,.35)";
+
+    for(let i=1;i<4;i++){
+
+      ctx.fillRect(
+        leader.x-30-i*26,
+        leader.y-34-i*3,
+        18,
+        5
+      );
+
+    }
+
+  }
+
+}
+
+function drawEffects(){
+
+  for(const p of effects){
+
+    ctx.globalAlpha=
+      Math.max(0,p.life*2);
+
+    ctx.fillStyle=p.color;
+
+    ctx.fillRect(p.x,p.y,5,5);
+
+  }
+
+  ctx.globalAlpha=1;
+
+}
+
+function drawOverlayText(){
+
+  if(started&&!paused&&!gameOver){
+    return;
+  }
+
+  ctx.fillStyle="rgba(6,5,12,.55)";
+  ctx.fillRect(0,0,W,H);
+
+  ctx.fillStyle="#fff";
+  ctx.font="900 30px Arial";
+  ctx.textAlign="center";
+  ctx.textBaseline="middle";
+
+  ctx.fillText(
+    !started
+      ?"ZOMBIE TSUNAMI"
+      :gameOver
+        ?"FIM DA CORRIDA"
+        :"PAUSADO",
+    W/2,
+    H/2-12
+  );
+
+  ctx.fillStyle="rgba(255,255,255,.55)";
+  ctx.font="900 15px Arial";
+
+  ctx.fillText(
+    !started
+      ?"Escolha a dificuldade para soltar a horda"
+      :gameOver
+        ?Math.floor(distance)+" m · "+score+" pontos"
+        :"Toque em CONTINUAR",
+    W/2,
+    H/2+22
+  );
+
+}
+
+function draw(){
+
+  ctx.clearRect(0,0,W,H);
+
+  drawSky();
+  drawBuildings();
+  drawRoad();
+
+  for(const o of obstacles){
+
+    if(o.type==="buraco"){
+
+      drawPit(o);
+
+    }
+
+  }
+
+  for(const b of brains){
+
+    drawBrain(b);
+
+  }
+
+  for(const it of items){
+
+    drawItem(it);
+
+  }
+
+  for(const h of humans){
+
+    drawHuman(h);
+
+  }
+
+  if(started){
+
+    drawHorde();
+
+  }
+
+  for(const o of obstacles){
+
+    if(o.type==="carro"){
+
+      drawCar(o);
+
+    }else if(o.type==="onibus"){
+
+      drawBus(o);
+
+    }else if(o.type==="cone"){
+
+      drawCone(o);
+
+    }
+
+  }
+
+  drawEffects();
+  drawOverlayText();
+
+}
+
+// ─── Loop ──────────────────────────────────────────────────────────────
+
+function loop(time){
+
+  if(!running){
+    return;
+  }
+
+  if(!lastTime){
+    lastTime=time;
+  }
+
+  let dt=
+    (time-lastTime)/1000;
+
+  lastTime=time;
+
+  if(dt>0.05){
+    dt=0.05;
+  }
+
+  update(dt);
+
+  if(!gameOver){
+
+    draw();
+    updateUI();
+
+    rafId=
+      requestAnimationFrame(loop);
+
+  }
+
+}
+
+// ─── Eventos ───────────────────────────────────────────────────────────
+
+canvas.addEventListener(
+  "pointerdown",
+  function(e){
+
+    e.preventDefault();
+
+    jump();
+
+  }
+);
+
+canvas.addEventListener(
+  "touchstart",
+  function(e){
+
+    e.preventDefault();
+
+  },
+  {passive:false}
+);
+
+window.addEventListener(
+  "keydown",
+  function(e){
+
+    if(
+      e.code==="Space"||
+      e.code==="ArrowUp"
+    ){
+
+      e.preventDefault();
+
+      jump();
+
+    }
+
+    if(e.code==="KeyP"){
+
+      togglePause();
+
+    }
+
+  }
+);
+
+easyBtn.addEventListener(
+  "click",
+  function(){
+
+    selectMode("easy");
+
+  }
+);
+
+normalBtn.addEventListener(
+  "click",
+  function(){
+
+    selectMode("normal");
+
+  }
+);
+
+insaneBtn.addEventListener(
+  "click",
+  function(){
+
+    selectMode("insane");
+
+  }
+);
+
+startBtn.addEventListener(
+  "click",
+  startRun
+);
+
+newBtn.addEventListener(
+  "click",
+  newRun
+);
+
+pauseBtn.addEventListener(
+  "click",
+  togglePause
+);
+
+againBtn.addEventListener(
+  "click",
+  function(){
+
+    const keep=selectedMode;
+
+    newRun();
+
+    if(keep){
+
+      selectMode(keep);
+
+    }
+
+  }
+);
+
+window.addEventListener(
+  "resize",
+  resizeCanvas
+);
+
+loadRecord();
+buildScenery();
+resizeCanvas();
+renderLog();
+updateUI();
+draw();
+
+})();
+</script>
